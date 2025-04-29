@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Response
 from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 import asyncio
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
@@ -28,3 +28,43 @@ async def get_paysats(username: str):
         "username": username,
         "message": f"This is paysats info for {username}"
     })
+
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coming Soon</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background: linear-gradient(to right, #667eea, #764ba2);
+                color: white;
+                text-align: center;
+            }
+            h1 {
+                font-size: 3em;
+            }
+            p {
+                font-size: 1.5em;
+                margin-top: 0.5em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>🚀 Coming Soon 🚀</h1>
+        <p>We're working hard to launch something amazing.<br>Stay tuned!</p>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
+
