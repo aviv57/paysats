@@ -1,35 +1,33 @@
-FROM python:3.13 as python-base
+# Use Python 3.13 as the base image
+FROM python:3.13-slim as base
 
-# https://python-poetry.org/docs#ci-recommendations
-ENV POETRY_VERSION=2.1.1
-ENV POETRY_HOME=/opt/poetry
-ENV POETRY_VENV=/opt/poetry-venv
-
-# Tell Poetry where to place its cache and virtual environment
-ENV POETRY_CACHE_DIR=/opt/.cache
-
-# Creating a virtual environment just for poetry and install it with pip
-RUN python3 -m venv $POETRY_VENV \
-	&& $POETRY_VENV/bin/pip install -U pip setuptools \
-	&& $POETRY_VENV/bin/pip install poetry==${POETRY_VERSION}
-
-# Add Poetry to PATH
-ENV PATH="${PATH}:${POETRY_VENV}/bin"
-
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy Dependencies
-COPY poetry.lock pyproject.toml ./
+# Install dependencies required for Poetry
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gcc libpq-dev curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Dependencies
-RUN poetry install --no-interaction --no-cache
+# Install Poetry version 2.1.1
+RUN curl -sSL https://install.python-poetry.org | python3 - \
+    && ln -s /root/.local/bin/poetry /usr/local/bin/poetry
 
-# Copy Application
-COPY . /app
+# Set environment variables for Poetry
+ENV POETRY_VERSION=2.1.1
+ENV PATH="/root/.local/bin:${PATH}"
 
+# Copy the poetry.lock and pyproject.toml files to install dependencies
+COPY pyproject.toml poetry.lock /app/
 
+# Install the dependencies using Poetry
+RUN poetry install --no-dev --no-interaction
+
+# Copy the rest of your application code into the container
+COPY . /app/
+
+# Expose port 8080
 EXPOSE 8080
 
-#uvicorn main:app
-#poetry run python -m uvicorn main:app --host 0.0.0.0 --port 8080
-CMD [ "poetry", "run", "python", "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8080"] 
+# Command to run Uvicorn server
+CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
