@@ -1,27 +1,26 @@
-# Base image
-FROM python:3.13 as python-base
+# Use Python 3.13 slim image as the base image
+FROM python:3.13-slim
 
-# Set environment variables
-ENV POETRY_VERSION=2.1.2 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-
-# Install Poetry
-RUN pip install --no-cache-dir "poetry==$POETRY_VERSION"
-
-# Create working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy only requirements to cache dependencies
+# Install Poetry (2024 version, stable release)
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# Add Poetry to the PATH
+ENV PATH="/root/.local/bin:$PATH"
+
+# Copy pyproject.toml and poetry.lock if present
 COPY pyproject.toml poetry.lock* /app/
 
-# Install dependencies
-RUN poetry config virtualenvs.create false && poetry install --no-dev --no-interaction --no-ansi
+# Install dependencies with Poetry
+RUN poetry install --no-interaction --no-dev
 
-# Copy the rest of the application
-COPY . /app
+# Copy the rest of the application code into the container
+COPY . /app/
 
-# Expose port
-EXPOSE 8081
+# Expose port 80
+EXPOSE 80
 
-CMD ["uvicorn", "main:app", "--host", "127.0.0.1", "--port", "8081"]
+# Run FastAPI using Poetry and Uvicorn
+CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "80"]
