@@ -26,13 +26,25 @@ async def get_lnurlp(username: str):
         }
 )
 
-@app.get("/.well-known/paysats/{username}")
-async def get_paysats(username: str):
+# @app.get("/.well-known/paysats/{username}")
+# async def get_paysats(username: str):
+#     # Here you can add your own logic to build the response
+#     return JSONResponse(content={
+#         "username": username,
+#         "message": f"This is paysats info for {username}"
+#     })
+
+@app.get("/.well-known/nostr.json")
+async def get_nip_05():
     # Here you can add your own logic to build the response
-    return JSONResponse(content={
-        "username": username,
-        "message": f"This is paysats info for {username}"
-    })
+    return JSONResponse(content=
+    {
+        "names":
+        {
+            "aviv": "ddb575d7a5d2dbdaec4db767298b029e5d114d9a5ef7d0ba5103e79566c71ca8"
+        }
+    }
+    )
 
 @app.get("/", response_class=HTMLResponse)
 async def root():
