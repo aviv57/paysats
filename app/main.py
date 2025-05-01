@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 # from pydantic import BaseModel
 from fastapi.responses import JSONResponse, HTMLResponse
+from http import HTTPStatus
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
@@ -60,10 +61,10 @@ async def get_lnurlp(username: str):
 
 @app.get("/.well-known/paysats/{username}")
 async def get_paysats(username: str):
-    if username.lower() != "aviv":
-        return JSONResponse(status_code=404, content={"error": "Username not found"})
-
-    return JSONResponse(content=g_server_db.query_user(user=username))
+    try:
+        return JSONResponse(content=g_server_db.query_user(user=username))
+    except DB.DoesnotExists:
+        return JSONResponse(status_code=HTTPStatus.NOT_FOUND, content={"error": f"{username} not found"})
 
 
 @app.get("/.well-known/nostr.json")
