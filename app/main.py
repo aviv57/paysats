@@ -1,10 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 # from pydantic import BaseModel
+from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse, HTMLResponse
 from http import HTTPStatus
+from fastapi.staticfiles import StaticFiles
+import os
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+BASE_DIR = os.path.dirname(__file__)
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 class DB:
     class DoesnotExists(Exception):
@@ -78,42 +84,6 @@ async def get_nip_05():
         }
     )
 
-
 @app.get("/", response_class=HTMLResponse)
-async def root():
-    html_content = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Coming Soon</title>
-        <style>
-            body {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 100vh;
-                margin: 0;
-                font-family: Arial, sans-serif;
-                background: linear-gradient(to right, #667eea, #764ba2);
-                color: white;
-                text-align: center;
-            }
-            h1 {
-                font-size: 3em;
-            }
-            p {
-                font-size: 1.5em;
-                margin-top: 0.5em;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>🚀 Coming Soon 🚀</h1>
-        <p>We're working hard to launch something amazing.<br>Stay tuned!</p>
-    </body>
-    </html>
-    """
-    return HTMLResponse(content=html_content)
+async def index(request: Request):
+     return templates.TemplateResponse("index.html", {"request": request, "title": "paysats.online (Coming soon)"})
