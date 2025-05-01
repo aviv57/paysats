@@ -26,13 +26,28 @@ async def get_lnurlp(username: str):
         }
 )
 
-# @app.get("/.well-known/paysats/{username}")
-# async def get_paysats(username: str):
-#     # Here you can add your own logic to build the response
-#     return JSONResponse(content={
-#         "username": username,
-#         "message": f"This is paysats info for {username}"
-#     })
+@app.get("/.well-known/paysats/{username}")
+async def get_paysats(username: str):
+    if username.lower() != "aviv":
+        return JSONResponse(
+            status_code=404,
+            content={"error": "Username not found"}
+        )
+    
+    d = {
+            "contact": {
+                "x": "@mockuser",
+                "email": "mockuser@example.com",
+                "nostr": "npub1examplepublickey000000000000000000000000000000000000000000000000000"
+            },
+            "bitcoin": {
+                "address": "bc1qexampleaddress1234567890",
+                "xpub": "xpub3x4ExampleExample",
+                "lightning_address": "mockuser@lightning.example.com",
+                "silent_payments": "sp1qexampleaddresssilentpay000000000000000"
+            }
+        }
+    return JSONResponse(content=d)
 
 @app.get("/.well-known/nostr.json")
 async def get_nip_05():
