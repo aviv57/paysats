@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Response
-from pydantic import BaseModel
+#from pydantic import BaseModel
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse, HTMLResponse
 import asyncio
@@ -8,12 +8,17 @@ app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 @app.get("/.well-known/lnurlp/{username}")
 async def get_lnurlp(username: str):
-    # Here you can add your own logic to build the response
+    if username.lower() != "aviv":
+        return JSONResponse(
+            status_code=404,
+            content={"error": "Username not found"}
+        )
+    
     return JSONResponse(content={
         "callback": "https://livingroomofsatoshi.com/api/v1/lnurl/payreq/9427284d-4fd4-48e3-850a-3bf10c9a9748",
         "maxSendable": 100000000000,
         "minSendable": 1000,
-        "metadata": "[[\"text/plain\",\"Pay to AvivB\"],[\"text/identifier\",\"tacitweight60@walletofsatoshi.com\"]]",
+        "metadata": "[[\"text/plain\",\"Pay to AvivB\"],[\"text/identifier\",\"aviv@paysats.online\"]]",
         "commentAllowed": 255,
         "tag": "payRequest",
         "allowsNostr": True,
