@@ -1,5 +1,5 @@
 # Use Python 3.13 as the base image
-FROM python:3.13-slim as base
+FROM python:3.13-slim AS base
 
 # Set the working directory in the container
 WORKDIR /app
@@ -18,10 +18,11 @@ ENV POETRY_VERSION=2.1.1
 ENV PATH="/root/.local/bin:${PATH}"
 
 # Copy the poetry.lock and pyproject.toml files to install dependencies
+# Copy poetry configuration files first to install dependencies
 COPY pyproject.toml poetry.lock /app/
 
 # Install the dependencies using Poetry
-RUN poetry install --no-interaction
+RUN poetry install --no-interaction --no-root
 
 # Copy the rest of your application code into the container
 COPY . /app/

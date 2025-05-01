@@ -1,16 +1,18 @@
-[tool.poetry]
+[project]
 name = "paysats"
 version = "0.1.0"
 description = ""
-authors = ["aviv57 <aviv57@gmail.com>"]
+authors = [
+    {name = "aviv57",email = "aviv57@gmail.com"}
+]
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.13"
-fastapi = "^0.115.12"
-uvicorn = "^0.34.2"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi (>=0.115.12,<0.116.0)",
+    "uvicorn (>=0.34.2,<0.35.0)"
+]
 
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
