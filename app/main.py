@@ -32,15 +32,16 @@ server_db_dict = {
 # Add record to DB
 server_db_dict["users"]["aviv"] = {
         "contact": {
-            "x": "@mockuser",
-            "email": "mockuser@example.com",
-            "nostr": "npub1examplepublickey000000000000000000000000000000000000000000000000000",
+            "nickname":"aviv",
+            "x": "@Aviv__BarEl",
+            "email": "aviv@paysats.online",
+            "nostr": "npub1mk6ht4a96tda4mzdkanjnzcznew3znv6tmmapwj3q0ne2ek8rj5q8vpf5q",
         },
         "bitcoin": {
-            "address": "bc1qexampleaddress1234567890",
-            "xpub": "xpub3x4ExampleExample",
-            "lightning_address": "mockuser@lightning.example.com",
-            "silent_payments": "sp1qexampleaddresssilentpay000000000000000",
+            "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
+            "xpub": "N/A",
+            "lightning_address": "aviv@paysats.online",
+            "silent_payments": "N/A",
         },
     }
 g_server_db = DB(server_db_dict)
@@ -71,6 +72,13 @@ async def get_paysats(username: str):
         return JSONResponse(content=g_server_db.query_user(user=username))
     except DB.DoesnotExists:
         return JSONResponse(status_code=HTTPStatus.NOT_FOUND, content={"error": f"{username} not found"})
+    
+@app.get("/u/{username}", response_class=HTMLResponse)
+async def show_payment_options(request: Request, username: str):
+    user = g_server_db.query_user(username)
+    if not user:
+        return HTMLResponse(status_code=HTTPStatus.NOT_FOUND, content="User not found")
+    return templates.TemplateResponse("user.html", {"request": request, "user": user})    
 
 
 @app.get("/.well-known/nostr.json")
