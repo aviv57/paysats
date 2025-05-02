@@ -1,0 +1,13 @@
+"Paysats Online" is a project centered around the concept of a unified, user-friendly address (paysats address) that aims to simplify online interactions and Bitcoin payments.
+Instead of having separate identifiers for different platforms and payment methods,
+Paysats Online provides a single "email-like" address (e.g., aviv@paysats.online) that can resolve to various:
+- Contact Information: Including a nickname, Twitter handle (x), email address, and Nostr public key.
+
+- Bitcoin Payment Options: Encompassing an on-chain Bitcoin address and a Lightning Address (which, in this case, may be the same as the paysats address itself).
+The system is designed to be extensible for future payment methods or platforms.
+
+Technically, when a service encounters a paysats address, it would make a GET request to a specific URL (e.g., https://paysats.online/.well-known/paysats/aviv) to retrieve a JSON payload containing the associated contact details and payment information.
+This allows applications like wallets or social media platforms to easily discover and interact with a user's preferred methods of contact and payment through a single, memorable address.
+
+The project distinguishes itself from the existing Lightning Address system by using the .well-known/paysats/ namespace and by aiming to support a broader range of Bitcoin payment methods beyond just Lightning.
+The name "paysats" reflects this wider scope, focusing on Bitcoin payments in general ("sats" being a common term for satoshis, the smallest unit of Bitcoin).
