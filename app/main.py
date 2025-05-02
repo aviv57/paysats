@@ -5,29 +5,14 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse, HTMLResponse
 from http import HTTPStatus
 from fastapi.staticfiles import StaticFiles
+
+from app.db import DB, server_db_dict
 import os
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 BASE_DIR = os.path.dirname(__file__)
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
-
-class DB:
-    class DoesnotExists(Exception):
-        pass
-
-    def __init__(self, data):
-        self.__db_data = data
-
-    def query_user(self, user):
-        u = self.__db_data.get("users", {}).get(user)
-        if u is None:
-            raise self.DoesnotExists()
-        return u
-
-server_db_dict = {
-    "users":{}
-}
 
 def none_to_na(obj):
     return "N/A" if obj is None else obj
@@ -42,24 +27,7 @@ def apply_none_to_na(data):
     else:
         return none_to_na(data)
 
-# Add record to DB
-server_db_dict["users"]["aviv"] = {
-        "contact": {
-            "nickname":"aviv",
-            "x": "@Aviv__BarEl",
-            "email": "aviv@paysats.online",
-            "nostr": "npub1mk6ht4a96tda4mzdkanjnzcznew3znv6tmmapwj3q0ne2ek8rj5q8vpf5q",
-        },
-        "bitcoin": {
-            "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
-            "xpub": None,
-            "lightning_address": "aviv@paysats.online",
-            "silent_payments": None,
-        },
-    }
-
 g_server_db = DB(apply_none_to_na(server_db_dict))
-
 
 @app.get("/.well-known/lnurlp/{username}")
 async def get_lnurlp(username: str):
