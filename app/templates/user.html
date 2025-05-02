@@ -78,12 +78,21 @@
 
     <div class="payment-option">
       <div class="label">⚡ Lightning Address</div>
-      <div class="value">{{ user.bitcoin.lightning_address }}</div>
+      <div class="value">
+        <a href="lightning:{{ user.bitcoin.lightning_address }}">
+            {{ user.bitcoin.lightning_address }}
+        </a>
+    </div>
+    
     </div>
 
     <div class="payment-option">
       <div class="label">₿ Bitcoin Address</div>
-      <div class="value">{{ user.bitcoin.address }}</div>
+      <div class="value">
+        <a href="bitcoin:{{ user.bitcoin.address }}">
+            {{ user.bitcoin.address }}
+        </a>
+    </div>    
     </div>
 
     <div class="payment-option">
