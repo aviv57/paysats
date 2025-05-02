@@ -29,6 +29,19 @@ server_db_dict = {
     "users":{}
 }
 
+def none_to_na(obj):
+    return "N/A" if obj is None else obj
+
+def apply_none_to_na(data):
+    if isinstance(data, dict):
+        return {k: apply_none_to_na(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [apply_none_to_na(item) for item in data]
+    elif isinstance(data, tuple):
+        return tuple(apply_none_to_na(item) for item in data)
+    else:
+        return none_to_na(data)
+
 # Add record to DB
 server_db_dict["users"]["aviv"] = {
         "contact": {
@@ -39,12 +52,13 @@ server_db_dict["users"]["aviv"] = {
         },
         "bitcoin": {
             "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
-            "xpub": "N/A",
+            "xpub": None,
             "lightning_address": "aviv@paysats.online",
-            "silent_payments": "N/A",
+            "silent_payments": None,
         },
     }
-g_server_db = DB(server_db_dict)
+
+g_server_db = DB(apply_none_to_na(server_db_dict))
 
 
 @app.get("/.well-known/lnurlp/{username}")
