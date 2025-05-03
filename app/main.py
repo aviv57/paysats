@@ -7,7 +7,7 @@ from http import HTTPStatus
 from fastapi.staticfiles import StaticFiles
 
 from app.db import DB, server_db_dict
-from app.utils import generate_qr_base64
+from app.utils import generate_qr_base64, apply_none_to_na
 import os
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
@@ -17,21 +17,11 @@ app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), na
 
 BASE_URL = "https://paysats.online"
 
-def none_to_na(obj):
-    return "N/A" if obj is None else obj
-
-def apply_none_to_na(data):
-    if isinstance(data, dict):
-        return {k: apply_none_to_na(v) for k, v in data.items()}
-    elif isinstance(data, list):
-        return [apply_none_to_na(item) for item in data]
-    elif isinstance(data, tuple):
-        return tuple(apply_none_to_na(item) for item in data)
-    else:
-        return none_to_na(data)
-
 g_server_db = DB(apply_none_to_na(server_db_dict))
 
+"""
+Lightning address protocol for "aviv"
+"""
 @app.get("/.well-known/lnurlp/{username}")
 async def get_lnurlp(username: str):
     if username.lower() != "aviv":
@@ -51,6 +41,21 @@ async def get_lnurlp(username: str):
     )
 
 
+"""
+NIP-05 protocol for "aviv"
+"""
+@app.get("/.well-known/nostr.json")
+async def get_nip_05():
+    # Here you can add your own logic to build the response
+    return JSONResponse(
+        content={
+            "names": {
+                "aviv": "ddb575d7a5d2dbdaec4db767298b029e5d114d9a5ef7d0ba5103e79566c71ca8"
+            }
+        }
+    )
+
+
 @app.get("/.well-known/paysats/{username}")
 async def get_paysats(username: str):
     try:
@@ -64,18 +69,6 @@ async def show_payment_options(request: Request, username: str):
     if not user:
         return HTMLResponse(status_code=HTTPStatus.NOT_FOUND, content="User not found")
     return templates.TemplateResponse("user.html", {"request": request, "user": user, "qr_image": generate_qr_base64(f"{BASE_URL}/u/{username}")})
-
-
-@app.get("/.well-known/nostr.json")
-async def get_nip_05():
-    # Here you can add your own logic to build the response
-    return JSONResponse(
-        content={
-            "names": {
-                "aviv": "ddb575d7a5d2dbdaec4db767298b029e5d114d9a5ef7d0ba5103e79566c71ca8"
-            }
-        }
-    )
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
