@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from app.db import DB, server_db_dict
 from app.utils import generate_qr_base64, apply_none_to_na
 from app import nip05
+from app.lightningaddress import get_lightningaddress
 import os
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
@@ -25,22 +26,7 @@ Lightning address protocol for "aviv"
 """
 @app.get("/.well-known/lnurlp/{username}")
 async def get_lnurlp(username: str):
-    if username.lower() != "aviv":
-        return JSONResponse(status_code=404, content={"error": "Username not found"})
-
-    return JSONResponse(
-        content={
-            "callback": "https://livingroomofsatoshi.com/api/v1/lnurl/payreq/9427284d-4fd4-48e3-850a-3bf10c9a9748",
-            "maxSendable": 100000000000,
-            "minSendable": 1000,
-            "metadata": '[["text/plain","Pay to AvivB"],["text/identifier","aviv@paysats.online"]]',
-            "commentAllowed": 255,
-            "tag": "payRequest",
-            "allowsNostr": True,
-            "nostrPubkey": "be1d89794bf92de5dd64c1e60f6a2c70c140abac9932418fee30c5c637fe9479",
-        }
-    )
-
+    return get_lightningaddress(username)
 
 """
 NIP-05 protocol for "aviv"
