@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.db import DB, server_db_dict
 from app.utils import generate_qr_base64, apply_none_to_na
+from app import nip05
 import os
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
@@ -47,13 +48,7 @@ NIP-05 protocol for "aviv"
 @app.get("/.well-known/nostr.json")
 async def get_nip_05():
     # Here you can add your own logic to build the response
-    return JSONResponse(
-        content={
-            "names": {
-                "aviv": "ddb575d7a5d2dbdaec4db767298b029e5d114d9a5ef7d0ba5103e79566c71ca8"
-            }
-        }
-    )
+    return nip05.get_nip_05()
 
 
 @app.get("/.well-known/paysats/{username}")
