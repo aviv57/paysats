@@ -21,7 +21,7 @@ This repo contains a POC server written in Python, with fastapi and Jinja2 to se
 - `http://server.com/.well-known/nostr.json` - This endpoint will return NIP-05 related public keys (See: https://github.com/nostr-protocol/nips/blob/master/05.md)
 
 This server also serve a "linktree" like page available from mobile / desktop under the following url:
-`http://server.com/u/<username> you can see here an example: https://paysats.online/u/aviv
+`http://server.com/u/<username>` you can see here an example: https://paysats.online/u/aviv
 
 
 ## Note
