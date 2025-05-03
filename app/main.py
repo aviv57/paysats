@@ -5,14 +5,26 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse, HTMLResponse
 from http import HTTPStatus
 from fastapi.staticfiles import StaticFiles
+import qrcode
 
 from app.db import DB, server_db_dict
+from io import BytesIO
 import os
+import base64
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 BASE_DIR = os.path.dirname(__file__)
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
+
+BASE_URL = "https://paysats.online"
+
+def generate_qr_base64(url: str) -> str:
+    qr = qrcode.make(url)
+    buffer = BytesIO()
+    qr.save(buffer, format="PNG")
+    qr_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    return f"data:image/png;base64,{qr_base64}"
 
 def none_to_na(obj):
     return "N/A" if obj is None else obj
@@ -60,7 +72,7 @@ async def show_payment_options(request: Request, username: str):
     user = g_server_db.query_user(username)
     if not user:
         return HTMLResponse(status_code=HTTPStatus.NOT_FOUND, content="User not found")
-    return templates.TemplateResponse("user.html", {"request": request, "user": user})    
+    return templates.TemplateResponse("user.html", {"request": request, "user": user, "qr_image": generate_qr_base64(f"{BASE_URL}/u/{username}")})
 
 
 @app.get("/.well-known/nostr.json")

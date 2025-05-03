@@ -57,6 +57,11 @@
       font-size: 1.1em;
     }
 
+    @media only screen and (max-width: 767px) {
+    .desktop-only {
+        display: none;
+    }    
+
     @media (max-width: 600px) {
       body {
         padding: 1em;
@@ -75,6 +80,11 @@
 <body>
   <div class="container">
     <h1>{{ user.contact.nickname|capitalize }}'s Payment Options</h1>
+
+    <div class="desktop-only">
+        <p>Try to access this page from your mobile phone:</p>
+        <img src="{{ qr_image }}" width="256" height="256"> 
+    </div>    
 
     <div class="payment-option">
       <div class="label">⚡ Lightning Address</div>
