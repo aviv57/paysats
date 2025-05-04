@@ -1,3 +1,8 @@
+import os
+if not os.path.exists(".env"):
+    import shutil
+    shutil.copy(".env.example", ".env")
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -13,7 +18,6 @@ from app.db import DB, server_db_dict
 from app.utils import generate_qr_base64, apply_none_to_na
 from app import nip05
 from app.lightningaddress import get_lightningaddress
-import os
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 BASE_DIR = os.path.dirname(__file__)
@@ -46,7 +50,7 @@ async def get_paysats(username: str):
         return JSONResponse(content=g_server_db.query_user(user=username))
     except DB.DoesnotExists:
         return JSONResponse(status_code=HTTPStatus.NOT_FOUND, content={"error": f"{username} not found"})
-    
+
 @app.get("/u/{username}", response_class=HTMLResponse)
 async def show_payment_options(request: Request, username: str):
     user = g_server_db.query_user(username)
