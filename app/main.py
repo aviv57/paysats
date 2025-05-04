@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import FastAPI, Request
 
 # from pydantic import BaseModel
@@ -17,7 +20,7 @@ BASE_DIR = os.path.dirname(__file__)
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
-BASE_URL = "https://paysats.online"
+BASE_URL = os.environ.get("BASE_URL", "https://paysats.online")
 
 g_server_db = DB(apply_none_to_na(server_db_dict))
 
