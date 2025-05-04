@@ -14,8 +14,15 @@ The response will be a structured JSON with contact information like mail, nostr
 and with bitcoin payment related details, for example silent payment address or an xpub.
 
 
+## Paysats standard
+Paysats standard is a new standard for any application to get Bitcoin payment options and contact information about
+any person willing to recieve a bitcoin payment.
+The Paysats standard addresses looks like an email / lightning address user@domain.com
+In order to retrieve payment options client should make a GET request to the following endpoint: `http://domain.com/.well-known/paysats/<username>`
+
+
 ## Paysats server
-This repo contains a POC server written in Python, with fastapi and Jinja2 to serve 3 endpoints
+This repo contains a POC server written in Python, with fastapi and Jinja2 to serve three endpoints
 - `http://server.com/.well-known/paysats/<username>` - This endpoint will return contact infromation about the user and bitcoin payment options
 - `http://server.com/.well-known/lnurlp/<username>` - This endpoint should return a json like defined in [lightning-address](https://github.com/andrerfneves/lightning-address)
 - `http://server.com/.well-known/nostr.json` - This endpoint will return NIP-05 related public keys (See: https://github.com/nostr-protocol/nips/blob/master/05.md)
