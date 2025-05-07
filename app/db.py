@@ -26,6 +26,25 @@ server_db_dict["users"]["aviv"] = {
             "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
             "xpub": None,
             "lightning_address": "aviv@paysats.online",
+            "url": None,
             "silent_payments": None,
         },
     }
+
+server_db_dict["users"]["sni"] = {
+        "contact": {
+            "nickname":"Satoshi Nakamoto Institute",
+            "x": "@NakamotoInst",
+            "email": None,
+            "nostr": "npub1wzc9lz2f40azl98shkjewx3pywg5e5alwqxg09ew2mdyeey0c2rqaespmf",
+        },
+        "bitcoin": {
+            "address": None,
+            "xpub": None,
+            "lightning_address": "sni@primal.net",
+            "url": "https://pay.zaprite.com/pl_vNYDp4YBSd",
+            "silent_payments": None,
+        },
+    }
+
+    # 
