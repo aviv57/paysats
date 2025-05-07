@@ -2,122 +2,138 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ user.contact.nickname|capitalize }}'s Payment Options</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e0eafc, #cfdef3);
-            color: #333;
-            margin: 0;
-            padding: 2em;
-            display: flex;
-            justify-content: center;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ user.contact.nickname|capitalize }}'s Payment Options</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0eafc, #cfdef3);
+      color: #333;
+      margin: 0;
+      padding: 2em;
+      display: flex;
+      justify-content: center;
+    }
 
-        .container {
-            background-color: #fff;
-            padding: 2em;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            max-width: 700px;
-            width: 100%;
-        }
+    .container {
+      background-color: #fff;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      width: 100%;
+    }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 1.5em;
-            font-size: 2em;
-            color: #222;
-        }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5em;
+      font-size: 2em;
+      color: #222;
+    }
 
-        .payment-option {
-            border-left: 4px solid #667eea;
-            padding: 1em 1.5em;
-            margin: 1em 0;
-            background: #f9f9f9;
-            border-radius: 8px;
-            transition: background 0.3s ease;
-        }
+    .payment-option {
+      border-left: 4px solid #667eea;
+      padding: 1em 1.5em;
+      margin: 1em 0;
+      background: #f9f9f9;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
 
-        .payment-option:hover {
-            background: #eef3ff;
-        }
+    .payment-option:hover {
+      background: #eef3ff;
+    }
 
-        .label {
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 0.3em;
-        }
+    .description-block {
+      background: #eaf3ff;
+      padding: 1em 1.5em;
+      margin: 1em 0;
+      border-radius: 8px;
+      font-size: 0.95em;
+      color: #444;
+    }
 
-        .value {
-            font-family: monospace;
-            color: #222;
-            word-break: break-all;
-            font-size: 1.1em;
-        }
+    .label {
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 0.3em;
+    }
 
-        @media only screen and (max-width: 767px) {
-            .desktop-only {
-                display: none;
-            }
-        }
+    .value {
+      font-family: monospace;
+      color: #222;
+      word-break: break-word;
+      font-size: 1.1em;
+    }
 
-        @media (max-width: 600px) {
-            body {
-                padding: 1em;
-            }
+    .value a {
+      color: #2a5bd7;
+      text-decoration: none;
+    }
 
-            .container {
-                padding: 1.2em;
-            }
+    .value a:hover {
+      text-decoration: underline;
+    }
 
-            .value {
-                font-size: 1em;
-            }
-        }
-    </style>
+    @media (max-width: 600px) {
+      body {
+        padding: 1em;
+      }
+
+      .container {
+        padding: 1.2em;
+      }
+
+      .value {
+        font-size: 1em;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>{{ user.contact.nickname|capitalize }}'s Payment Options</h1>
+  <div class="container">
+    <h1>{{ user.contact.nickname|capitalize }}'s Payment Options</h1>
 
-        <div class="desktop-only">
-            <p>Try to access this page from your mobile phone:</p>
-            <img src="{{ qr_image }}" width="256" height="256">
-        </div>
-
-        <div class="payment-option">
-            <div class="label">⚡ Lightning Address</div>
-            <div class="value">
-                <a href="lightning:{{ user.bitcoin.lightning_address }}">
-                    {{ user.bitcoin.lightning_address }}
-                </a>
-            </div>
-
-        </div>
-
-        <div class="payment-option">
-            <div class="label">₿ Bitcoin Address</div>
-            <div class="value">
-                <a href="bitcoin:{{ user.bitcoin.address }}">
-                    {{ user.bitcoin.address }}
-                </a>
-            </div>
-        </div>
-
-        <div class="payment-option">
-            <div class="label">🔑 XPUB</div>
-            <div class="value">{{ user.bitcoin.xpub }}</div>
-        </div>
-
-        <div class="payment-option">
-            <div class="label">🕵️ Silent Payments</div>
-            <div class="value">{{ user.bitcoin.silent_payments }}</div>
-        </div>
+    <div class="desktop-only">
+      <p>Try to access this page from your mobile phone:</p>
+      <img src="{{ qr_image }}" width="256" height="256">
     </div>
+
+    <div class="payment-option">
+      <div class="label">⚡ Lightning Address</div>
+      <div class="value">
+        <a href="lightning:{{ user.bitcoin.lightning_address }}">
+          {{ user.bitcoin.lightning_address }}
+        </a>
+      </div>
+    </div>
+
+    <div class="payment-option">
+      <div class="label">₿ Bitcoin Address</div>
+      <div class="value">
+        <a href="bitcoin:{{ user.bitcoin.address }}">
+          {{ user.bitcoin.address }}
+        </a>
+      </div>
+    </div>
+
+    <div class="payment-option">
+      <div class="label">🕵️ Silent Payments</div>
+      <div class="value">{{ user.bitcoin.silent_payments }}</div>
+    </div>
+
+    <div class="description-block">
+      <strong>What are Silent Payments?</strong><br />
+      Silent Payments enable private Bitcoin transactions without revealing the recipient’s address on the blockchain.
+      Learn more at
+      <a href="https://silentpayments.xyz/docs/" target="_blank" rel="noopener noreferrer">
+        silentpayments.xyz/docs
+      </a>.
+    </div>
+
+  </div>
 </body>
 
 </html>
