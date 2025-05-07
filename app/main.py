@@ -1,7 +1,10 @@
 import os
+import logging
+
+logger = logging.getLogger()
+
 if not os.path.exists(".env"):
-    import shutil
-    shutil.copy(".env.example", ".env")
+    logger.warning("No .env file found, using default values")
 
 from dotenv import load_dotenv
 load_dotenv()
