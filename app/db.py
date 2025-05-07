@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 class DB:
     class DoesnotExists(Exception):
         pass
@@ -14,6 +16,29 @@ class DB:
 server_db_dict = {
     "users":{}
 }
+
+@dataclass
+class PaysatsUser:
+    nickname: str
+    x: str
+    email: str
+    nostr: str
+    bitcoin_address: str = None
+    bitcoin_xpub: str = None
+    lightning_address: str = None
+    silent_payments_address: str = None
+
+    def __repr__(self):
+        return f"PaysatsUser(nickname={self.nickname}, x={self.x}, email={self.email}, nostr={self.nostr})"
+
+users = [
+    PaysatsUser(
+        nickname="aviv",
+        x="@Aviv__BarEl",
+        email="aviv@paysats.online",
+        nostr="npub1mk6ht4a96tda4mzdkanjnzcznew3znv6tmmapwj3q0ne2ek8rj5q8vpf5q",
+    )
+]
 
 server_db_dict["users"]["aviv"] = {
         "contact": {
