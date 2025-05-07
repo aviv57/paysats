@@ -5,6 +5,11 @@ Instead of managing separate identifiers across different platforms and payment 
 
 This projects is inspired by https://github.com/andrerfneves/lightning-address
 
+## Live Demo:
+Main page: [paysats.online](https://paysats.online)
+
+User profile page: [Aviv](https://paysats.online/u/aviv)
+
 ## Client Integration with Paysats Addresses
 To resolve a Paysats address, clients must perform an HTTP `GET` request to the following well-known endpoint:
 
