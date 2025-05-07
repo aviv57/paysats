@@ -26,7 +26,7 @@ server_db_dict["users"]["aviv"] = {
             "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
             "xpub": None,
             "lightning_address": "aviv@paysats.online",
-            "url": None,
+            "payment_url": None,
             "silent_payments": None,
         },
     }
@@ -42,7 +42,7 @@ server_db_dict["users"]["sni"] = {
             "address": None,
             "xpub": None,
             "lightning_address": "sni@primal.net",
-            "url": "https://pay.zaprite.com/pl_vNYDp4YBSd",
+            "payment_url": "https://pay.zaprite.com/pl_vNYDp4YBSd",
             "silent_payments": None,
         },
     }

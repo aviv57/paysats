@@ -134,6 +134,15 @@
       <div class="value">{{ user.bitcoin.silent_payments }}</div>
     </div>
 
+    <div class="payment-option">
+      <div class="label">🔗 Payment URL</div>
+      <div class="value">
+        <a href="{{ user.bitcoin.payment_url }}" target="_blank" rel="noopener noreferrer">
+          {{ user.bitcoin.payment_url }}
+        </a>
+      </div>
+    </div>        
+
     <div class="description-block">
       <strong>What are Silent Payments?</strong><br />
       Silent Payments enable private Bitcoin transactions without revealing the recipient’s address on the blockchain.
