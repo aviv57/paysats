@@ -63,4 +63,9 @@ async def show_payment_options(request: Request, username: str):
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-     return templates.TemplateResponse("index.html", {"request": request, "title": "paysats.online (Coming soon)"})
+     return templates.TemplateResponse("index.html", {"request": request})
+
+#index2
+@app.get("/index2", response_class=HTMLResponse)
+async def index2(request: Request):
+     return templates.TemplateResponse("index2.html", {"request": request})
