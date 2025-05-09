@@ -65,7 +65,11 @@ async def show_payment_options(request: Request, username: str):
 async def index(request: Request):
      return templates.TemplateResponse("index.html", {"request": request})
 
-#index2
-@app.get("/index2", response_class=HTMLResponse)
-async def index2(request: Request):
-     return templates.TemplateResponse("index2.html", {"request": request})
+@app.get("/search", response_class=HTMLResponse)
+async def search(request: Request):
+    q = request.query_params.get("q")
+    try:
+        user = g_server_db.query_user(q)
+        return templates.TemplateResponse("user.html", {"request": request, "user": user, "qr_image": generate_qr_base64(f"{BASE_URL}/u/{q}")})
+    except DB.DoesnotExists:
+        return templates.TemplateResponse("404.html", {"request": request})

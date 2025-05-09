@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paysats Online</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            padding: 2em;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #222;
+            text-align: center;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        ul {
+            margin-left: 1.2em;
+        }
+
+        .contact,
+        .links {
+            margin-top: 2em;
+            padding: 1em;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .contact p,
+        .links p {
+            margin: 0.5em 0;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style for the JSON response block */
+    .json-response {
+        background-color: #f4f4f4;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 1em;
+        font-family: Consolas, monospace;
+        font-size: 0.95em;
+        color: #333;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        margin-top: 1em;
+    }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>Welcome to Paysats Online</h1>
+
+    <p><strong>Paysats Online</strong> is a project focused on creating a unified, email-like identity for Bitcoin
+        users.</p>
+
+    <p>Instead of juggling multiple handles and addresses across platforms, Paysats provides a single memorable address
+        like <code>yourname@paysats.online</code> that resolves to:</p>
+
+    <ul>
+        <li><strong>Contact Information:</strong> Nickname, Twitter/X handle, email, and Nostr public key</li>
+        <li><strong>Bitcoin Payment Options:</strong> On-chain address, Lightning Address, Silent Payments, and more
+        </li>
+    </ul>
+
+    <p>This system is designed to help wallets, social platforms, and users interact more easily with decentralized
+        identity and payments.</p>
+    <div class="example">
+        <h2>📡 Example API Call</h2>
+        <p>You can retrieve a Paysats profile using a simple HTTP GET request:</p>
+        <pre><code>curl https://paysats.online/.well-known/paysats/aviv</code></pre>
+        <p>The response will be a JSON object containing contact information and Bitcoin payment details, like so:</p>
+        <pre class="json-response">
+{
+    "contact": {
+        "nickname": "aviv",
+        "x": "@Aviv__BarEl",
+        "email": "aviv@paysats.online",
+        "nostr": "npub1mk6ht4a96tda4mzdkanjnzcznew3znv6tmmapwj3q0ne2ek8rj5q8vpf5q"
+    },
+    "bitcoin": {
+        "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
+        "xpub": "N/A",
+        "lightning_address": "aviv@paysats.online",
+        "payment_url": "N/A"
+        "silent_payments": "N/A"
+    }
+}
+            </pre>
+
+    </div>
+
+    <div class="contact">
+        <h2>Want a Paysats Profile?</h2>
+        <p>At the moment, profile creation is manual.</p>
+        <p>Please contact me at <a href="mailto:aviv@paysats.online">aviv@paysats.online</a> to request your Paysats
+            address and profile.</p>
+    </div>
+
+    <div class="links">
+        <h2>Explore More</h2>
+        <p>🔗 View the project on <a href="https://github.com/aviv57/paysats" target="_blank">GitHub</a></p>
+        <p>👤 See my <a href="http://paysats.online/u/aviv" target="_blank">profile</a></p>
+    </div>
+
+</body>
+
+</html>
