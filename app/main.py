@@ -64,6 +64,10 @@ async def show_payment_options(request: Request, username: str):
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
      return templates.TemplateResponse("index.html", {"request": request})
+ 
+@app.get("/faq", response_class=HTMLResponse)
+async def faq(request: Request):
+     return templates.TemplateResponse("faq.html", {"request": request})
 
 @app.get("/search", response_class=HTMLResponse)
 async def search(request: Request):
