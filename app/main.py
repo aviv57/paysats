@@ -18,8 +18,8 @@ from http import HTTPStatus
 from fastapi.staticfiles import StaticFiles
 
 from app.db import DB, server_db_dict
-from app.utils import generate_qr_base64, apply_none_to_na
 from app import nip05
+from app import utils
 from app.lightningaddress import get_lightningaddress
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
@@ -29,7 +29,7 @@ app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), na
 
 BASE_URL = os.environ.get("BASE_URL", "https://paysats.online")
 
-g_server_db = DB(apply_none_to_na(server_db_dict))
+g_server_db = DB(utils.apply_none_to_na(server_db_dict))
 
 """
 Lightning address protocol for "aviv"
@@ -68,8 +68,21 @@ async def index(request: Request):
 @app.get("/search", response_class=HTMLResponse)
 async def search(request: Request):
     q = request.query_params.get("q")
-    try:
-        user = g_server_db.query_user(q.lower())
-        return templates.TemplateResponse("user.html", {"request": request, "user": user, "qr_image": generate_qr_base64(f"{BASE_URL}/u/{q}")})
-    except DB.DoesnotExists:
-        return templates.TemplateResponse("404.html", {"request": request})
+    server = "paysats.online"
+    user = q
+    if utils.is_valid_email(q):
+        user, server = q.split("@")
+        user, server = user.lower(), server.lower()
+    if server == "paysats.online":
+        try:
+            user = g_server_db.query_user(user)
+            return templates.TemplateResponse(
+                "user.html", 
+                {
+                    "request": request,
+                    "user": user,
+                    "qr_image": utils.generate_qr_base64(f"{BASE_URL}/u/{user}")
+                })
+        except DB.DoesnotExists:
+            return templates.TemplateResponse("404.html", {"request": request})
+    raise UnimplementedError("Only paysats.online is supported for now")

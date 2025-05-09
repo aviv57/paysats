@@ -1,6 +1,9 @@
 import qrcode
+import re
 from io import BytesIO
 import base64
+
+EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
 
 def generate_qr_base64(url: str) -> str:
     qr = qrcode.make(url)
@@ -21,3 +24,6 @@ def apply_none_to_na(data):
         return tuple(apply_none_to_na(item) for item in data)
     else:
         return none_to_na(data)
+
+def is_valid_email(email: str) -> bool:
+    return bool(EMAIL_REGEX.match(email))
