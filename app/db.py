@@ -5,7 +5,8 @@ class DB:
     def __init__(self, data):
         self.__db_data = data
 
-    def query_user(self, user):
+    def query_user(self, user: str) -> dict:
+        user = user.lower()
         u = self.__db_data.get("users", {}).get(user)
         if u is None:
             raise self.DoesnotExists()
