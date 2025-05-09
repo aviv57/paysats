@@ -69,7 +69,7 @@ async def index(request: Request):
 async def search(request: Request):
     q = request.query_params.get("q")
     try:
-        user = g_server_db.query_user(q)
+        user = g_server_db.query_user(q.lower())
         return templates.TemplateResponse("user.html", {"request": request, "user": user, "qr_image": generate_qr_base64(f"{BASE_URL}/u/{q}")})
     except DB.DoesnotExists:
         return templates.TemplateResponse("404.html", {"request": request})
