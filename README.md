@@ -1,7 +1,7 @@
 # Paysats Online
 
 **Paysats Online** is a project focused on creating a unified, email-like address for Bitcoin users.  
-Instead of managing separate identifiers across different platforms and payment methods, Paysats Online introduces a single memorable address:
+Instead of managing separate bitcoin addresses or payment platforms, Paysats Online introduces a single memorable address:
 
 This projects is inspired by https://github.com/andrerfneves/lightning-address
 
@@ -15,8 +15,27 @@ To resolve a Paysats address, clients must perform an HTTP `GET` request to the 
 
 `https://domain.com/.well-known/paysats/<USER>`
 
-The response will be a structured JSON with contact information like mail, nostr profile, etc.
-and with bitcoin payment related details, for example silent payment address or an xpub.
+### Example request and response
+```bash
+curl https://paysats.online/.well-known/paysats/aviv
+```
+```js
+{
+  "contact": {
+    "nickname": "aviv",
+    "x": "@Aviv__BarEl",
+    "email": "aviv@paysats.online",
+    "nostr": "npub1mk6ht4a96tda4mzdkanjnzcznew3znv6tmmapwj3q0ne2ek8rj5q8vpf5q"
+  },
+  "bitcoin": {
+    "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
+    "xpub": "N/A",
+    "lightning_address": "aviv@paysats.online",
+    "payment_url": "N/A",
+    "silent_payments": "N/A"
+  }
+}
+```
 
 
 ## Paysats standard
