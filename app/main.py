@@ -59,7 +59,7 @@ async def show_payment_options(request: Request, username: str):
     user = g_server_db.query_user(username)
     if not user:
         return HTMLResponse(status_code=HTTPStatus.NOT_FOUND, content="User not found")
-    return templates.TemplateResponse("user.html", {"request": request, "user": user, "qr_image": generate_qr_base64(f"{BASE_URL}/u/{username}")})
+    return templates.TemplateResponse("user.html", {"request": request, "user": user, "qr_image": utils.generate_qr_base64(f"{BASE_URL}/u/{username}")})
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
