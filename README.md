@@ -1,25 +1,38 @@
 # Paysats Online
 
-**Paysats Online** is a project focused on creating a unified, email-like address for Bitcoin users.  
-Instead of managing separate bitcoin addresses or payment platforms, Paysats Online introduces a single memorable address:
+**Paysats Online** is a project aimed at creating a unified, email-like identity for Bitcoin users.  
+Instead of managing multiple Bitcoin addresses or payment platforms, Paysats Online provides a single, memorable address format:
 
-This projects is inspired by https://github.com/andrerfneves/lightning-address
+> `user@paysats.online`
 
-## Live Demo:
-Main page: [paysats.online](https://paysats.online)
+This project is inspired by [lightning-address](https://github.com/andrerfneves/lightning-address).
 
-User profile page: [Aviv](https://paysats.online/u/aviv)
+---
 
-## Client Integration with Paysats Addresses
-To resolve a Paysats address, clients must perform an HTTP `GET` request to the following well-known endpoint:
+## Live Demo
 
-`https://domain.com/.well-known/paysats/<USER>`
+- **Main Page:** [paysats.online](https://paysats.online)  
+- **Example User Profile:** [Aviv](https://paysats.online/u/aviv)
 
-### Example request and response
+---
+
+## How Client Integration Works
+
+To resolve a Paysats address, clients should perform an HTTP `GET` request to the well-known endpoint:
+
+```
+https://<domain>/.well-known/paysats/<username>
+```
+
+### Example Request
+
 ```bash
 curl https://paysats.online/.well-known/paysats/aviv
 ```
-```js
+
+### Example Response
+
+```json
 {
   "contact": {
     "nickname": "aviv",
@@ -37,24 +50,29 @@ curl https://paysats.online/.well-known/paysats/aviv
 }
 ```
 
+## Paysats Server
 
-## Paysats standard
-Paysats standard is a new standard for any application to get Bitcoin payment options and contact information about
-any person willing to recieve a bitcoin payment.
-The Paysats standard addresses looks like an email / lightning address user@domain.com
-In order to retrieve payment options client should make a GET request to the following endpoint: `http://domain.com/.well-known/paysats/<username>`
+This repository contains a proof-of-concept server written in Python using FastAPI and Jinja2. It currently supports few endpoints:
 
+- `/.well-known/paysats/<username>`  
+  - Returns contact information and Bitcoin payment options.
+- `/.well-known/lnurlp/<username>`  
+  - Returns JSON as defined in [lightning-address](https://github.com/andrerfneves/lightning-address).
+- `/.well-known/nostr.json`  
+  - Returns NIP-05 public keys. See [NIP-05](https://github.com/nostr-protocol/nips/blob/master/05.md).
 
-## Paysats server
-This repo contains a POC server written in Python, with fastapi and Jinja2 to serve three endpoints
-- `http://server.com/.well-known/paysats/<username>` - This endpoint will return contact infromation about the user and bitcoin payment options
-- `http://server.com/.well-known/lnurlp/<username>` - This endpoint should return a json like defined in [lightning-address](https://github.com/andrerfneves/lightning-address)
-- `http://server.com/.well-known/nostr.json` - This endpoint will return NIP-05 related public keys (See: https://github.com/nostr-protocol/nips/blob/master/05.md)
+The server also provides a "linktree-style" profile page (mobile and desktop friendly) at:
 
-This server also serve a "linktree" like page available from mobile / desktop under the following url:
-`http://server.com/u/<username>` you can see here an example: https://paysats.online/u/aviv
+> `https://<domain>/u/<username>`  
 
+Example: [https://paysats.online/u/aviv](https://paysats.online/u/aviv)
 
-## Note
-The project is now in alpha stage, so all users are hardcoded and not fetched from DB,
-if you want me to add your payment details you can contact me via email on aviv@paysats.online
+---
+
+## Alpha Notice
+
+This project is currently in **alpha**. All users are hardcoded and not stored in a database.
+
+If you’d like your payment details added, feel free to contact me at:
+
+**aviv@paysats.online**
