@@ -10,10 +10,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from fastapi import FastAPI, Request
-
-# from pydantic import BaseModel
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
 from http import HTTPStatus
 from fastapi.staticfiles import StaticFiles
 
@@ -79,14 +77,10 @@ async def search(request: Request):
         user, server = user.lower(), server.lower()
     if server == "paysats.online":
         try:
-            user = g_server_db.query_user(user)
-            return templates.TemplateResponse(
-                "user.html", 
-                {
-                    "request": request,
-                    "user": user,
-                    "qr_image": utils.generate_qr_base64(f"{BASE_URL}/u/{user}")
-                })
+            user_dict = g_server_db.query_user(user)
         except DB.DoesnotExists:
             return templates.TemplateResponse("404.html", {"request": request})
-    raise UnimplementedError("Only paysats.online is supported for now")
+        return RedirectResponse(url=f"/u/{user}", status_code=302)
+    return JSONResponse(status_code=400,
+        content={"reason": "Only paysats.online is supported for now"}
+    )
