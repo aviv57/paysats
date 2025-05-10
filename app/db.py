@@ -48,4 +48,20 @@ server_db_dict["users"]["sni"] = {
         },
     }
 
-    # 
+
+# mock user for demo purposes
+server_db_dict["users"]["mockuser"] = {
+        "contact": {
+            "nickname":"Mock User",
+            "x": "@mockuser",
+            "email": "mock@domain.com",
+            "nostr": "npubmockuser",
+        },
+        "bitcoin": {
+            "address": "bc1qmockaddress",
+            "xpub": "xpubmockxpub",
+            "lightning_address": "mockmock@primal.net",
+            "payment_url": None,
+            "silent_payments": "spmockusermockmockmockmockmock",
+        },
+    }
