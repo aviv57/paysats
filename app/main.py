@@ -26,7 +26,8 @@ BASE_DIR = os.path.dirname(__file__)
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
-BASE_URL = os.environ.get("BASE_URL", "https://paysats.online")
+BASE_URL = os.environ.get("BASE_URL", "https://paysats.online").rstrip("/")
+CURRENT_SERVER = BASE_URL.rsplit("://", 1)[1].split("/")[0]
 
 g_server_db = DB(utils.apply_none_to_na(server_db_dict))
 
@@ -71,12 +72,12 @@ async def faq(request: Request):
 @app.get("/search", response_class=HTMLResponse)
 async def search(request: Request):
     q = request.query_params.get("q")
-    server = "paysats.online"
+    server = CURRENT_SERVER
     user = q
     if utils.is_valid_email(q):
         user, server = q.split("@")
         user, server = user.lower(), server.lower()
-    if server == "paysats.online":
+    if server == CURRENT_SERVER:
         try:
             user_dict = g_server_db.query_user(user)
         except DB.DoesnotExists:
@@ -90,6 +91,8 @@ async def resolve_paysats_address(request: Request, address: str):
         return JSONResponse(status_code=400, content={"error": "Invalid address"})
     user, server = address.split("@")
     user, server = user.lower(), server.lower()
+    if server == CURRENT_SERVER:
+        return RedirectResponse(url=f"/u/{user}", status_code=302)
     paysats_res = requests.get(f"https://{server}/.well-known/paysats/{user}")
     if paysats_res.status_code == HTTPStatus.NOT_FOUND:
         return JSONResponse(status_code=HTTPStatus.NOT_FOUND, content={"error": f"{user}@{server} not found"})
