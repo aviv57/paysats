@@ -1,5 +1,6 @@
 import os
 import logging
+import requests
 
 logger = logging.getLogger()
 
@@ -81,6 +82,22 @@ async def search(request: Request):
         except DB.DoesnotExists:
             return templates.TemplateResponse("404.html", {"request": request})
         return RedirectResponse(url=f"/u/{user}", status_code=302)
-    return JSONResponse(status_code=400,
-        content={"reason": "Only paysats.online is supported for now"}
-    )
+    return RedirectResponse(url=f"/resolve/{user}@{server}", status_code=302)    
+    
+@app.get("/resolve/{address}", response_class=HTMLResponse)
+async def resolve_paysats_address(request: Request, address: str):
+    if not utils.is_valid_email(address):
+        return JSONResponse(status_code=400, content={"error": "Invalid address"})
+    user, server = address.split("@")
+    user, server = user.lower(), server.lower()
+    paysats_res = requests.get(f"https://{server}/.well-known/paysats/{user}")
+    if paysats_res.status_code == HTTPStatus.NOT_FOUND:
+        return JSONResponse(status_code=HTTPStatus.NOT_FOUND, content={"error": f"{user}@{server} not found"})
+    if paysats_res.status_code != HTTPStatus.OK:
+        return JSONResponse(status_code=HTTPStatus.INTERNAL_SERVER_ERROR, content={"error": f"Error fetching {user}@{server}"})
+    return templates.TemplateResponse("user.html",
+                                      {
+                                       "request": request,
+                                       "user": paysats_res.json(),
+                                       "qr_image": utils.generate_qr_base64(f"{BASE_URL}/resolve/{user}@{server}"),
+                                      })
