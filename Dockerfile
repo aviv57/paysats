@@ -16,7 +16,7 @@ ENV PATH="/root/.local/bin:${PATH}"
 # Copy only poetry files to leverage Docker cache
 COPY pyproject.toml poetry.lock /app/
 
-RUN poetry install --no-interaction --no-root --without dev
+RUN poetry install --no-interaction --no-root
 
 # Now copy the rest of the app
 COPY . /app/
