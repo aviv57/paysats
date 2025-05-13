@@ -1,5 +1,6 @@
 import os
 import logging
+import json
 import requests
 
 logger = logging.getLogger()
@@ -30,13 +31,25 @@ BASE_URL = os.environ.get("BASE_URL", "https://paysats.online").rstrip("/")
 CURRENT_SERVER = BASE_URL.rsplit("://", 1)[1].split("/")[0]
 
 g_server_db = DB(utils.apply_none_to_na(server_db_dict))
+g_loaded_lnurlp_map = None
 
 """
 Lightning address protocol for "aviv"
 """
 @app.get("/.well-known/lnurlp/{username}")
 async def get_lnurlp(username: str):
-    return get_lightningaddress(username)
+    global g_loaded_lnurlp_map
+    lnurlp_map = {}
+    if g_loaded_lnurlp_map is None:
+        if os.path.exists("lnurlp_map.json"):
+            with open("lnurlp_map.json", "r") as f:
+                lnurlp_map = json.load(f)
+            g_loaded_lnurlp_map = lnurlp_map
+        else:
+            logger.warning("lnurlp_map.json not found, using empty map")
+            g_loaded_lnurlp_map = {}
+    
+    return get_lightningaddress(username, g_loaded_lnurlp_map)
 
 """
 NIP-05 protocol for "aviv"
