@@ -30,26 +30,27 @@ app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), na
 BASE_URL = os.environ.get("BASE_URL", "https://paysats.online").rstrip("/")
 CURRENT_SERVER = BASE_URL.rsplit("://", 1)[1].split("/")[0]
 
-g_server_db = DB(utils.apply_none_to_na(server_db_dict))
-g_loaded_lnurlp_map = None
+class Globals:
+    pass
+Globals.server_db = DB(utils.apply_none_to_na(server_db_dict))
+Globals.loaded_lnurlp_map = None
 
 """
 Lightning address protocol for "aviv"
 """
 @app.get("/.well-known/lnurlp/{username}")
 async def get_lnurlp(username: str):
-    global g_loaded_lnurlp_map
     lnurlp_map = {}
-    if g_loaded_lnurlp_map is None:
+    if Globals.loaded_lnurlp_map is None:
         if os.path.exists("lnurlp_map.json"):
             with open("lnurlp_map.json", "r") as f:
                 lnurlp_map = json.load(f)
-            g_loaded_lnurlp_map = lnurlp_map
+            Globals.loaded_lnurlp_map = lnurlp_map
         else:
             logger.warning("lnurlp_map.json not found, using empty map")
-            g_loaded_lnurlp_map = {}
+            Globals.loaded_lnurlp_map = {}
     
-    return get_lightningaddress(username, g_loaded_lnurlp_map)
+    return get_lightningaddress(username, Globals.loaded_lnurlp_map)
 
 """
 NIP-05 protocol for "aviv"
@@ -63,13 +64,13 @@ async def get_nip_05():
 @app.get("/.well-known/paysats/{username}")
 async def get_paysats(username: str):
     try:
-        return JSONResponse(content=g_server_db.query_user(user=username))
+        return JSONResponse(content=Globals.server_db.query_user(user=username))
     except DB.DoesnotExists:
         return JSONResponse(status_code=HTTPStatus.NOT_FOUND, content={"error": f"{username} not found"})
 
 @app.get("/u/{username}", response_class=HTMLResponse)
 async def show_payment_options(request: Request, username: str):
-    user = g_server_db.query_user(username)
+    user = Globals.server_db.query_user(username)
     if not user:
         return HTMLResponse(status_code=HTTPStatus.NOT_FOUND, content="User not found")
     return templates.TemplateResponse("user.html", {"request": request, "user": user, "qr_image": utils.generate_qr_base64(f"{BASE_URL}/u/{username}")})
@@ -92,7 +93,7 @@ async def search(request: Request):
         user, server = user.lower(), server.lower()
     if server == CURRENT_SERVER:
         try:
-            user_dict = g_server_db.query_user(user)
+            user_dict = Globals.server_db.query_user(user)
         except DB.DoesnotExists:
             return templates.TemplateResponse("404.html", {"request": request})
         return RedirectResponse(url=f"/u/{user}", status_code=302)
