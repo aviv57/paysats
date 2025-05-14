@@ -42,15 +42,18 @@ Lightning address protocol for "aviv"
 async def get_lnurlp(username: str):
     lnurlp_map = {}
     if Globals.loaded_lnurlp_map is None:
-        if os.path.exists("lnurlp_map.json"):
-            with open("lnurlp_map.json", "r") as f:
+        lnurlp_map_path = "app/lnurlp_map.json"
+        if os.path.exists(lnurlp_map_path):
+            with open(lnurlp_map_path, "r") as f:
                 lnurlp_map = json.load(f)
             Globals.loaded_lnurlp_map = lnurlp_map
+            logger.info("lnurlp_map.json loaded successfully")
         else:
             logger.warning("lnurlp_map.json not found, using empty map")
             Globals.loaded_lnurlp_map = {}
-    
-    return get_lightningaddress(username, Globals.loaded_lnurlp_map)
+
+    user = Globals.server_db.query_user(user=username)
+    return get_lightningaddress(username, Globals.loaded_lnurlp_map, user)
 
 """
 NIP-05 protocol for "aviv"
