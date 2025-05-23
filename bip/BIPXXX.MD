@@ -28,7 +28,7 @@ While the Lightning Address standard has demonstrated utility, it is limited to 
 
 Clients should query:
 ```plain
-https://<domain>/.well-known/paysats/<username>
+https://<domain>/.well-known/bipXXX/<username>
 ```
 
 Servers must respond with a valid JSON document in the following structure:
@@ -39,11 +39,10 @@ Servers must respond with a valid JSON document in the following structure:
     "nickname": "Alice",
     "x": "@Alice",
     "email": "alice@gmail.com",
-    "nostr": "npub1......"
+    "nostr": "nprofile1......"
   },
   "bitcoin": {
     "address": "bc1q......",
-    "xpub": "N/A",
     "lightning_address": "alice@walletofsatoshi.com",
     "payment_url": "N/A",
     "silent_payments": "N/A"
@@ -66,6 +65,10 @@ You can test it out your self using the following command
 ```bash
 curl https://paysats.online/.well-known/paysats/sni | jq
 ```
+Note: The current path uses .well-known/paysats as a placeholder.
+Once this proposal is assigned a BIP number, it is expected to be updated to:
+.well-known/bipXXX
+
 
 ## Relationship to Existing Work
 
