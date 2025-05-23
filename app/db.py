@@ -21,7 +21,7 @@ server_db_dict["users"]["aviv"] = {
             "nickname":"aviv",
             "x": "@Aviv__BarEl",
             "email": "aviv@paysats.online",
-            "nostr": "npub1mk6ht4a96tda4mzdkanjnzcznew3znv6tmmapwj3q0ne2ek8rj5q8vpf5q",
+            "nostr": "nprofile1qqsdmdt467ja9k76a3xmweef3vpfuhg3fkd9aa7shfgs8eu4vmr3e2qpz3mhxue69uhhyetvv9ujuerpd46hxtnfduqs6amnwvaz7tmwdaejumr0ds0trnjy",
         },
         "bitcoin": {
             "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
@@ -37,7 +37,7 @@ server_db_dict["users"]["sni"] = {
             "nickname":"Satoshi Nakamoto Institute",
             "x": "@NakamotoInst",
             "email": None,
-            "nostr": "npub1wzc9lz2f40azl98shkjewx3pywg5e5alwqxg09ew2mdyeey0c2rqaespmf",
+            "nostr": "nprofile1qqs8pvzl39y6h730jnctmfvhrgsj8y2v6wlhqry8juh9dkjvuj8u9pspz3mhxue69uhhyetvv9ujuerpd46hxtnfduqs6amnwvaz7tmwdaejumr0dshlg0u3",
         },
         "bitcoin": {
             "address": None,
