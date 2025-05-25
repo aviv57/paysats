@@ -42,7 +42,6 @@ curl https://paysats.online/.well-known/paysats/aviv
   },
   "bitcoin": {
     "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
-    "xpub": "N/A",
     "lightning_address": "aviv@paysats.online",
     "payment_url": "N/A",
     "silent_payments": "N/A"

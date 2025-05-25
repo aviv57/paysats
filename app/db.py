@@ -25,7 +25,6 @@ server_db_dict["users"]["aviv"] = {
         },
         "bitcoin": {
             "address": "bc1qft4764g468c09rzv6huzjnzcfelzrva9mcjk75",
-            "xpub": None,
             "lightning_address": "aviv@paysats.online",
             "payment_url": None,
             "silent_payments": None,
@@ -41,7 +40,6 @@ server_db_dict["users"]["sni"] = {
         },
         "bitcoin": {
             "address": None,
-            "xpub": None,
             "lightning_address": "sni@primal.net",
             "payment_url": "https://pay.zaprite.com/pl_vNYDp4YBSd",
             "silent_payments": None,
@@ -59,7 +57,6 @@ server_db_dict["users"]["mockuser"] = {
         },
         "bitcoin": {
             "address": "bc1qmockaddress",
-            "xpub": "xpubmockxpub",
             "lightning_address": "mockmock@primal.net",
             "payment_url": None,
             "silent_payments": "spmockusermockmockmockmockmock",
