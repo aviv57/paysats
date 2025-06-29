@@ -46,6 +46,21 @@ server_db_dict["users"]["sni"] = {
         },
     }
 
+server_db_dict["users"]["oria"] = {
+        "contact": {
+            "nickname":"Oria",
+            "x": None,
+            "email": None,
+            "nostr": None,
+        },
+        "bitcoin": {
+            "address": None,
+            "lightning_address": "toda@walletofsatoshi.com",
+            "payment_url": "https://prime-previously-vulture.ngrok-free.app/apps/2B9WcQXU8fNZVsfgcrebWyk7xxqz/pos",
+            "silent_payments": None,
+        },
+    }
+
 
 # mock user for demo purposes
 server_db_dict["users"]["mockuser"] = {
